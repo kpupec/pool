@@ -1,0 +1,674 @@
+<!DOCTYPE html>
+<html lang="pl" data-theme="light">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-i18n="page.title">Czysty Basen — Poradnik Ogrodowy</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <link rel="stylesheet" href="pool.css">
+</head>
+
+<body>
+
+    <header class="site-header">
+        <div class="container pt-5 pb-4 py-lg-5 text-center position-relative">
+            <div class="position-absolute top-0 end-0 mt-3 me-3 d-flex gap-2">
+                <button class="theme-toggle" onclick="toggleLang()" id="langToggleBtn">🇬🇧 EN</button>
+                <button class="theme-toggle" onclick="toggleLogin()" id="loginBtn">
+                    <span id="authIcon">☁️</span> <span id="authText" data-i18n="auth.login">Zaloguj</span>
+                </button>
+                <button class="theme-toggle" onclick="toggleTheme()" id="themeToggleBtn" title="Przełącz motyw">
+                    🌙 <span data-i18n="theme.dark">Tryb ciemny</span>
+                </button>
+            </div>
+            <h1 class="display-5 fw-bold mb-2" data-i18n="header.h1">🏊 Czysty Basen</h1>
+            <p class="lead mb-0 mx-auto" style="max-width:560px;" data-i18n="header.lead">Praktyczny poradnik
+                pielęgnacji basenu ogrodowego. Dowiedz się jak utrzymać wodę w idealnej kondycji przez cały sezon
+                kąpielowy.</p>
+        </div>
+
+        <nav class="tab-nav">
+            <div class="container d-flex flex-wrap">
+                <button onclick="switchTab('start')" class="tab-btn active" id="btn-start" data-i18n="tab.start">🚀
+                    Start</button>
+                <button onclick="switchTab('co-dalej')" class="tab-btn" id="btn-co-dalej" data-i18n="tab.equipment">💡
+                    Wyposażenie</button>
+                <button onclick="switchTab('pielegnacja')" class="tab-btn" id="btn-pielegnacja"
+                    data-i18n="tab.routine">🧭 Pielęgnacja</button>
+                <button onclick="switchTab('parametry')" class="tab-btn" id="btn-parametry" data-i18n="tab.chemistry">⚖️
+                    Chemia &amp; Filtry</button>
+                <button onclick="switchTab('problemy')" class="tab-btn" id="btn-problemy" data-i18n="tab.problems">🩺
+                    Problemy z Wodą</button>
+            </div>
+        </nav>
+    </header>
+
+    <main class="container py-5 flex-grow-1">
+
+        <!-- ══ TAB: START ══════════════════════════════════════ -->
+        <section id="start" class="tab-content-panel active">
+            <div class="card p-4 p-lg-5">
+                <div class="d-flex justify-content-center mb-4">
+                    <div class="d-flex gap-2 p-2 rounded-3 panel-bg">
+                        <button id="season-open-btn"   onclick="setStartMode('open')"   class="btn btn-teal btn-sm px-4"    data-i18n="start.modeOpen">🌞 Otwarcie sezonu</button>
+                        <button id="season-winter-btn" onclick="setStartMode('winter')" class="btn btn-outline btn-sm px-4" data-i18n="start.modeWinter">❄️ Zimowanie</button>
+                    </div>
+                </div>
+
+                <div id="start-open-content">
+                <h2 class="h3 fw-bold mb-2" data-i18n="start.heading">Jak przygotować wodę w nowym basenie?</h2>
+                <p class="mb-5" style="color:var(--text-secondary);" data-i18n="start.desc">Zanim wskoczysz do wody —
+                    wykonaj te cztery kroki. Pominięcie któregokolwiek z nich często prowadzi do zielonej lub mętnej
+                    wody już po kilku dniach.</p>
+
+                <div class="row g-4">
+                    <div class="col-md-6">
+                        <div class="card card-accent clickable-card p-4 h-100" onclick="toggleDetail('detail-1')">
+                            <div class="d-flex justify-content-between align-items-start">
+                                <h3 class="h5 fw-bold mb-0" data-i18n="start.step1.title">Krok 1: Napełnij i zmierz</h3>
+                                <span class="fs-4 ms-2">🚰</span>
+                            </div>
+                            <p class="small mt-2 mb-0" style="color:var(--text-secondary);"
+                                data-i18n="start.step1.short">Po nalaniu wody od razu sprawdź jej parametry — nie czekaj
+                                na „następny dzień".</p>
+                            <div id="detail-1" class="d-none mt-3 pt-3 small"
+                                style="border-top:1px solid var(--card-border); color:var(--text-secondary);"
+                                data-i18n="start.step1.detail">
+                                Woda z wodociągu często ma podwyższone pH. Ze studni może zawierać żelazo — jeśli po
+                                dodaniu chloru woda zbrązowieje, konieczny będzie kwas askorbinowy. Pierwsza rzecz:
+                                pomiar pH.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="card card-accent clickable-card p-4 h-100" onclick="toggleDetail('detail-2')">
+                            <div class="d-flex justify-content-between align-items-start">
+                                <h3 class="h5 fw-bold mb-0" data-i18n="start.step2.title">Krok 2: Ustaw pH</h3>
+                                <span class="fs-4 ms-2">⚖️</span>
+                            </div>
+                            <p class="small mt-2 mb-0" style="color:var(--text-secondary);"
+                                data-i18n="start.step2.short">Wyreguluj odczyn do zakresu 7.0–7.4 — bez tego cała chemia
+                                basenowa działa o wiele słabiej.</p>
+                            <div id="detail-2" class="d-none mt-3 pt-3 small"
+                                style="border-top:1px solid var(--card-border); color:var(--text-secondary);"
+                                data-i18n="start.step2.detail">
+                                Przy złym pH chlor traci nawet 80% skuteczności. Za wysokie? Użyj pH Minus. Za niskie?
+                                Sięgnij po pH Plus. Odczekaj jeden pełny obieg wody przed kolejnym pomiarem.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="card card-accent clickable-card p-4 h-100" onclick="toggleDetail('detail-3')">
+                            <div class="d-flex justify-content-between align-items-start">
+                                <h3 class="h5 fw-bold mb-0" data-i18n="start.step3.title">Krok 3: Szok chlorowy</h3>
+                                <span class="fs-4 ms-2">⚡</span>
+                            </div>
+                            <p class="small mt-2 mb-0" style="color:var(--text-secondary);"
+                                data-i18n="start.step3.short">Zdezynfekuj wodę udarowo — zabij bakterie i
+                                zanieczyszczenia biologiczne zanim się zadomowią.</p>
+                            <div id="detail-3" class="d-none mt-3 pt-3 small"
+                                style="border-top:1px solid var(--card-border); color:var(--text-secondary);"
+                                data-i18n="start.step3.detail">
+                                Rozpuść granulat Chlor Szok w wiadrze wody, wlej powoli wzdłuż ścianek i włącz pompę
+                                filtrującą na kilka godzin. Do wody wchodź dopiero gdy wolny chlor spadnie poniżej 1
+                                mg/l.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="card card-accent clickable-card p-4 h-100" onclick="toggleDetail('detail-4')">
+                            <div class="d-flex justify-content-between align-items-start">
+                                <h3 class="h5 fw-bold mb-0" data-i18n="start.step4.title">Krok 4: Antyglon i tabletka
+                                </h3>
+                                <span class="fs-4 ms-2">🛡️</span>
+                            </div>
+                            <p class="small mt-2 mb-0" style="color:var(--text-secondary);"
+                                data-i18n="start.step4.short">Zabezpiecz wodę przed glonami i uruchom ciągłe, powolne
+                                dozowanie chemii.</p>
+                            <div id="detail-4" class="d-none mt-3 pt-3 small"
+                                style="border-top:1px solid var(--card-border); color:var(--text-secondary);"
+                                data-i18n="start.step4.detail">
+                                Wlej dawkę startową antyglonu. Do dozownika pływającego (nigdy bezpośrednio na dno —
+                                odbarwi!) wrzuć tabletkę multifunkcyjną 20g lub 200g. Będzie się powoli rozpuszczać
+                                utrzymując higienę wody.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <p class="text-center small mt-4 mb-0" style="color:var(--text-muted);" data-i18n="start.hint">💡
+                    Kliknij w kafelek, żeby rozwinąć szczegóły.</p>
+                </div><!-- /start-open-content -->
+
+                <div id="start-winter-content" class="d-none">
+                    <div class="d-flex flex-column gap-3" id="winter-steps"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ══ TAB: CO DALEJ ═══════════════════════════════════ -->
+        <section id="co-dalej" class="tab-content-panel">
+            <div class="card p-4 p-lg-5 mb-4">
+                <h2 class="h3 fw-bold mb-2" data-i18n="equipment.heading">💡 Od czego zacząć wyposażenie?</h2>
+                <p class="mb-4" style="color:var(--text-secondary);" data-i18n="equipment.desc">Nie wiesz co kupić do
+                    nowego basenu? Wybierz rozmiar zbiornika — wyświetlimy dopasowane rekomendacje sprzętu i chemii.</p>
+
+                <div class="d-flex justify-content-center mb-5">
+                    <div class="d-flex gap-2 p-2 rounded-3 panel-bg">
+                        <button id="size-small-btn" onclick="setPoolSize(9000)" class="btn btn-teal px-4"
+                            data-i18n="equipment.sizeSmall">Basen do 10m³</button>
+                        <button id="size-large-btn" onclick="setPoolSize(15000)" class="btn btn-outline px-4"
+                            data-i18n="equipment.sizeLarge">Basen powyżej 10m³</button>
+                    </div>
+                </div>
+
+                <div class="row g-4 mb-5">
+                    <div class="col-lg-6">
+                        <div class="card p-4 h-100">
+                            <h3 class="h5 fw-bold mb-4" data-i18n="equipment.acc.heading">🛠️ Sprzęt który warto mieć
+                            </h3>
+                            <div class="d-flex flex-column gap-3">
+                                <div class="card card-accent p-3"><span class="fw-semibold d-block small"
+                                        data-i18n="equipment.acc.filter.name">Zestaw filtrujący + rury i
+                                        dysze</span><span class="small" style="color:var(--text-secondary);"
+                                        data-i18n="equipment.acc.filter.desc">Serce systemu — bez filtracji woda szybko
+                                        zamienia się w siedlisko glonów i bakterii.</span></div>
+                                <div class="card card-accent p-3"><span class="fw-semibold d-block small"
+                                        data-i18n="equipment.acc.ladder.name">Drabinka</span><span class="small"
+                                        style="color:var(--text-secondary);"
+                                        data-i18n="equipment.acc.ladder.desc">Obowiązkowa przy basenie stelażowym —
+                                        ułatwia bezpieczne wchodzenie i wychodzenie.</span></div>
+                                <div class="card card-accent p-3"><span class="fw-semibold d-block small"
+                                        data-i18n="equipment.acc.solar.name">Pokrywa solarna (izotermiczna)</span><span
+                                        class="small" style="color:var(--text-secondary);"
+                                        data-i18n="equipment.acc.solar.desc">Utrzymuje temperaturę i zmniejsza zużycie
+                                        chemii ograniczając parowanie wody.</span></div>
+                                <div class="card card-accent p-3"><span class="fw-semibold d-block small"
+                                        data-i18n="equipment.acc.cover.name">Pokrywa ochronna (zimowa /
+                                        leśna)</span><span class="small" style="color:var(--text-secondary);"
+                                        data-i18n="equipment.acc.cover.desc">Blokuje liście i owady podczas dłuższej
+                                        przerwy w użytkowaniu.</span></div>
+                                <div class="card card-accent p-3"><span class="fw-semibold d-block small"
+                                        data-i18n="equipment.acc.skimmer.name">Siatka na wysięgniku
+                                        (podbierak)</span><span class="small" style="color:var(--text-secondary);"
+                                        data-i18n="equipment.acc.skimmer.desc">Najszybszy sposób na owady i liście z
+                                        powierzchni wody.</span></div>
+                                <div class="card card-accent p-3"><span class="fw-semibold d-block small"
+                                        data-i18n="equipment.acc.thermo.name">Termometr basenowy</span><span
+                                        class="small" style="color:var(--text-secondary);"
+                                        data-i18n="equipment.acc.thermo.desc">Kontrola temperatury wody — pomocna też
+                                        przy dawkowaniu chemii.</span></div>
+                                <div class="card card-accent p-3" id="acc-dispenser"><span
+                                        class="fw-semibold d-block small"
+                                        data-i18n="equipment.acc.dispenser.name">Dozownik pływający</span><span
+                                        class="small" id="acc-dispenser-text" style="color:var(--text-secondary);">Dla
+                                        małego basenu zaleca się mały pływak z regulacją przepływu.</span></div>
+                                <div class="card card-accent p-3" id="acc-vacuum"><span
+                                        class="fw-semibold d-block small"
+                                        data-i18n="equipment.acc.vacuum.name">Odkurzacz basenowy</span><span
+                                        class="small" id="acc-vacuum-text" style="color:var(--text-secondary);">Do małej
+                                        pompy (&lt;4m³/h) wybierz odkurzacz podłączany do węża ogrodowego.</span></div>
+                                <div class="card card-accent p-3"><span class="fw-semibold d-block small"
+                                        data-i18n="equipment.acc.tester.name">Tester pH i chloru / tlenu</span><span
+                                        class="small" style="color:var(--text-secondary);"
+                                        data-i18n="equipment.acc.tester.desc">Mierz parametry co tydzień — to podstawa
+                                        zdrowej wody.</span></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="card p-4 h-100">
+                            <h3 class="h5 fw-bold mb-4" data-i18n="equipment.chem.heading">🧪 Niezbędna chemia</h3>
+                            <div class="d-flex flex-column gap-3">
+                                <div class="card card-blue p-3"><span class="fw-semibold d-block small"
+                                        data-i18n="equipment.chem.shock.name">Chlor Szok</span><span class="small"
+                                        style="color:var(--text-secondary);"
+                                        data-i18n="equipment.chem.shock.desc">Błyskawiczna dezynfekcja przy starcie
+                                        sezonu lub gdy coś pójdzie nie tak.</span></div>
+                                <div class="card card-blue p-3"><span class="fw-semibold d-block small"
+                                        data-i18n="equipment.chem.phMinus.name">pH Minus</span><span class="small"
+                                        style="color:var(--text-secondary);"
+                                        data-i18n="equipment.chem.phMinus.desc">Obniża za wysokie pH — najczęstszy
+                                        problem z wodą wodociągową.</span></div>
+                                <div class="card card-blue p-3"><span class="fw-semibold d-block small"
+                                        data-i18n="equipment.chem.phPlus.name">pH Plus</span><span class="small"
+                                        style="color:var(--text-secondary);"
+                                        data-i18n="equipment.chem.phPlus.desc">Podnosi pH gdy woda jest zbyt
+                                        kwaśna.</span></div>
+                                <div class="card card-blue p-3"><span class="fw-semibold d-block small"
+                                        data-i18n="equipment.chem.algae.name">Środek przeciwglonowy
+                                        (Antyglon)</span><span class="small" style="color:var(--text-secondary);"
+                                        data-i18n="equipment.chem.algae.desc">Zatrzymuje wzrost glonów zanim zdążą
+                                        zabarwić ściany basenu.</span></div>
+                                <div class="card card-blue p-3"><span class="fw-semibold d-block small"
+                                        data-i18n="equipment.chem.floc.name">Flokulant / Koagulant</span><span
+                                        class="small" style="color:var(--text-secondary);"
+                                        data-i18n="equipment.chem.floc.desc">Skleja zawieszone drobiny w większe płatki
+                                        — woda robi się przejrzysta.</span></div>
+                                <div class="card card-blue p-3" id="acc-tabs"><span class="fw-semibold d-block small"
+                                        data-i18n="equipment.chem.tabs.name">Tabletki wielofunkcyjne</span><span
+                                        class="small" id="acc-tabs-text" style="color:var(--text-secondary);">Małe
+                                        tabletki 20g umieszczane stale w dozowniku.</span></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- DIY Filter -->
+                <div class="row g-4">
+                    <div class="col-lg-6">
+                        <div class="card card-amber p-4 h-100" style="background:rgba(245,158,11,0.04);">
+                            <h3 class="h5 fw-bold mb-3" data-i18n="diy.heading">🪣 Filtr wiaderkowy DIY — ratunek przy
+                                zażelazieniu</h3>
+                            <p class="small mb-3" style="color:var(--text-secondary);" data-i18n="diy.desc">Brązowa woda
+                                po dolaniu chloru? Pompa kartuszowa nie zbiera osadu? Ten prosty filtr możesz złożyć w
+                                10 minut za kilka złotych.</p>
+                            <h6 class="fw-semibold small mb-2" style="color:#b45309;" data-i18n="diy.instructions">
+                                Instrukcja krok po kroku:</h6>
+                            <ul class="small d-flex flex-column gap-2 mb-0" style="color:var(--text-secondary);">
+                                <li data-i18n="diy.li1">Weź plastikowe wiadro o pojemności <strong>10–20L</strong>.</li>
+                                <li data-i18n="diy.li2">W dnie wywierć gęsto małe otwory <strong>wiertłem
+                                        4–6mm</strong>.</li>
+                                <li data-i18n="diy.li3">Wypełnij szczelnie <strong>watą filtracyjną</strong></li>
+                                <li data-i18n="diy.li4">Wsadź wąż z pompy basenowej od góry wiadra.</li>
+                                <li data-i18n="diy.li5">Zawieś nad poziomem wody i filtruj bez przerwy.</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="card p-4 h-100 d-flex flex-column align-items-center justify-content-center">
+                            <h6 class="fw-bold mb-4" data-i18n="diy.vizTitle">Przekrój filtra wiaderkowego</h6>
+                            <div class="position-relative overflow-hidden d-flex flex-column justify-content-end shadow"
+                                style="width:160px;height:220px;background:rgba(20,184,166,0.06);border:3px solid rgba(20,184,166,0.25);border-radius:0 0 20px 20px;">
+                                <div class="position-absolute top-0 start-50 translate-middle-x d-flex align-items-end justify-content-center"
+                                    style="width:14px;height:48px;background:#60a5fa;border-radius:0 0 4px 4px;">
+                                    <span style="font-size:9px;color:#fff;padding-bottom:2px;writing-mode:vertical-rl;"
+                                        data-i18n="diy.hose">Wąż</span>
+                                </div>
+                                <div class="position-absolute"
+                                    style="top:48px;left:8px;right:8px;height:2px;background:rgba(96,165,250,0.35);">
+                                </div>
+                                <div class="d-flex flex-column align-items-center justify-content-center"
+                                    style="height:50%;background:rgba(245,158,11,0.07);border-top:2px dashed rgba(245,158,11,0.3);">
+                                    <span class="fw-bold" style="font-size:10px;color:#b45309;"
+                                        data-i18n="diy.filterMaterial">WARSTWA FILTRACYJNA</span>
+                                    <span style="font-size:9px;color:var(--text-muted);"
+                                        data-i18n="diy.filterNote"></span>
+                                </div>
+                                <div class="d-flex align-items-center justify-content-center"
+                                    style="height:33%;background:rgba(20,184,166,0.12);border-top:2px solid rgba(20,184,166,0.25);">
+                                    <span class="fw-bold" style="font-size:10px;color:var(--teal-600);"
+                                        data-i18n="diy.cleanWater">Czysta woda</span>
+                                </div>
+                                <div class="d-flex justify-content-around py-1"
+                                    style="background:rgba(20,184,166,0.2);">
+                                    <div style="width:6px;height:6px;background:var(--teal-500);border-radius:50%;">
+                                    </div>
+                                    <div style="width:6px;height:6px;background:var(--teal-500);border-radius:50%;">
+                                    </div>
+                                    <div style="width:6px;height:6px;background:var(--teal-500);border-radius:50%;">
+                                    </div>
+                                    <div style="width:6px;height:6px;background:var(--teal-500);border-radius:50%;">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="d-flex justify-content-around mt-2" style="width:160px;">
+                                <span class="water-drip" style="color:var(--teal-500);font-size:1.2rem;">💧</span>
+                                <span class="water-drip"
+                                    style="color:var(--teal-500);font-size:1.2rem;animation-delay:.5s;">💧</span>
+                                <span class="water-drip"
+                                    style="color:var(--teal-500);font-size:1.2rem;animation-delay:1s;">💧</span>
+                            </div>
+                            <span class="small mt-2" style="color:var(--text-muted);" data-i18n="diy.caption">Powrót
+                                czystej wody do basenu</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ══ TAB: PIELĘGNACJA ════════════════════════════════ -->
+        <section id="pielegnacja" class="tab-content-panel">
+            <div class="card p-4 p-lg-5">
+                <h2 class="h3 fw-bold mb-2" data-i18n="equipment.method.heading">🩺 Jak utrzymać czystą wodę krok po
+                    kroku?</h2>
+                <p class="mb-4" style="color:var(--text-secondary);" data-i18n="equipment.method.desc">Dwie sprawdzone
+                    metody — wybierz tę, która pasuje do Twojego stylu:</p>
+                <div class="d-flex justify-content-center mb-4">
+                    <div class="d-flex gap-2 p-2 rounded-3 panel-bg">
+                        <button id="method-chlor-btn" onclick="selectMethod('chlor')" class="btn btn-teal btn-sm px-4"
+                            data-i18n="equipment.method.chlor">Chlor</button>
+                        <button id="method-tlen-btn" onclick="selectMethod('tlen')" class="btn btn-outline btn-sm px-4"
+                            data-i18n="equipment.method.oxygen">Aktywny tlen</button>
+                    </div>
+                </div>
+                <div class="d-flex flex-column gap-3" id="method-steps"></div>
+            </div>
+        </section>
+
+        <!-- ══ TAB: PARAMETRY ══════════════════════════════════ -->
+        <section id="parametry" class="tab-content-panel">
+            <div class="card p-4 p-lg-5 mb-4">
+                <h2 class="h3 fw-bold mb-2" data-i18n="params.heading">Chemia i Filtracja — Liczby Które Musisz Znać
+                </h2>
+                <p class="mb-5" style="color:var(--text-secondary);" data-i18n="params.desc">Prawidłowe pH to warunek
+                    konieczny skuteczności chloru. Poniżej znajdziesz wizualizację skali pH oraz kalkulatory do
+                    obliczenia dawek i czasu filtrowania.</p>
+
+                <div class="chart-container mb-5">
+                    <canvas id="phChart"></canvas>
+                </div>
+
+                <div class="row g-4">
+                    <div class="col-lg-6">
+                        <div class="card p-4 h-100">
+                            <h3 class="h5 fw-bold mb-4" data-i18n="params.dosage.heading">🧪 Ile preparatu dodać?</h3>
+                            <div id="calcInputError" class="d-none alert-error p-3 mb-3 small"
+                                data-i18n="params.dosage.error">Wprowadź prawidłowe dane — objętość musi być większa od
+                                zera, pH w przedziale 0–14.</div>
+                            <div class="d-flex flex-column gap-3">
+                                <div>
+                                    <label class="form-label small fw-semibold"
+                                        data-i18n="params.dosage.volumeLabel">Objętość basenu (m³)</label>
+                                    <input type="number" id="poolVolume" value="10" min="1" class="form-control"
+                                        oninput="syncVolumesFromM3(this.value)">
+                                    <div class="form-text" data-i18n="params.dosage.volumeHint">1 m³ = 1000 litrów</div>
+                                </div>
+                                <div>
+                                    <div class="d-flex justify-content-between align-items-end mb-1">
+                                        <label class="form-label small fw-semibold mb-0"
+                                            data-i18n="params.dosage.productLabel">Preparat do obliczenia</label>
+                                        <button type="button" class="btn btn-outline btn-sm px-2 py-1"
+                                            style="font-size:.75rem;" onclick="openCustomChemicalModal()"
+                                            data-i18n="chem.modal.addBtn">➕ Dodaj własny środek</button>
+                                    </div>
+                                    <select id="chemicalType" onchange="onChemicalChange()" class="form-select">
+                                        <option value="default" data-i18n="params.dosage.opt.default">Regulator pH (pH
+                                            Plus / pH Minus)</option>
+                                        <option value="chlor_szok" data-i18n="params.dosage.opt.chlor">Chlor Szok
+                                            (dezynfekcja uderzeniowa)</option>
+                                        <option value="antyglon" data-i18n="params.dosage.opt.algae">Antyglon
+                                            (zapobieganie algom)</option>
+                                        <option value="flok" data-i18n="params.dosage.opt.floc">Flokulant / Koagulant
+                                            (klarowanie wody)</option>
+                                        <option value="wit_c" data-i18n="params.dosage.opt.vitc">Kwas askorbinowy
+                                            (brązowa woda / żelazo)</option>
+                                        <optgroup label="Twoje preparaty (Chmura)" id="customChemGroup">
+                                            <option disabled>Zaloguj się, aby dodać własne preparaty</option>
+                                        </optgroup>
+                                    </select>
+                                    <p id="chemLoginHint" class="small mt-2 mb-0" style="color:var(--text-muted);" data-i18n="chem.loginHint">☁️ Zaloguj się przez Google (przycisk w nagłówku), aby móc dodawać własne preparaty do kalkulatora i zapisywać je w chmurze.</p>
+                                </div>
+                                <div id="phInputGroup">
+                                    <label class="form-label small fw-semibold"
+                                        data-i18n="params.dosage.phLabel">Aktualne pH wody</label>
+                                    <input type="number" id="currentPh" value="7.8" step="0.1" class="form-control">
+                                </div>
+                                <button onclick="calculateDosage()" id="dosageBtn" class="btn btn-teal w-100 py-2"
+                                    data-i18n="params.dosage.calcBtn">Oblicz potrzebną dawkę</button>
+                            </div>
+                            <div id="calcResult" class="d-none result-box p-4 mt-4">
+                                <h5 class="fw-bold mb-2" id="resTitle"></h5>
+                                <p class="small mb-0 lh-lg" id="resText"></p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-6">
+                        <div class="card p-4 h-100">
+                            <h3 class="h5 fw-bold mb-4" data-i18n="params.filtration.heading">🌀 Ile godzin pracuje
+                                pompa?</h3>
+                            <div id="filterInputError" class="d-none alert-error p-3 mb-3 small"
+                                data-i18n="params.filtration.error">Objętość i wydajność pompy muszą być większe od
+                                zera.</div>
+                            <div class="row g-3 mb-3">
+                                <div class="col-6">
+                                    <label class="form-label small fw-semibold"
+                                        data-i18n="params.filtration.volumeLabel">Objętość basenu (L)</label>
+                                    <input type="number" id="filterPoolVolume" value="10000" min="100"
+                                        class="form-control" oninput="syncVolumesFromLiters(this.value)">
+                                </div>
+                                <div class="col-6">
+                                    <label class="form-label small fw-semibold"
+                                        data-i18n="params.filtration.flowLabel">Wydajność pompy (l/h)</label>
+                                    <input type="number" id="filterPumpFlow" value="3028" min="10" class="form-control">
+                                </div>
+                                <div class="col-6">
+                                    <label class="form-label small fw-semibold"
+                                        data-i18n="params.filtration.wattsLabel">Pobór mocy (W)</label>
+                                    <input type="number" id="filterPumpWatts" value="99" min="0" class="form-control">
+                                </div>
+                                <div class="col-6">
+                                    <label class="form-label small fw-semibold"
+                                        data-i18n="params.filtration.costLabel">Taryfa prądu (PLN/kWh)</label>
+                                    <input type="number" id="filterKwhCost" value="1.15" step="0.05" min="0"
+                                        class="form-control">
+                                </div>
+                            </div>
+                            <button onclick="calculateFiltration()" class="btn btn-teal w-100 py-2 mb-4"
+                                data-i18n="params.filtration.calcBtn">Oblicz czas filtracji i koszty</button>
+                            <div id="filterResult" class="d-none result-box p-4">
+                                <h5 class="fw-bold mb-3" data-i18n="params.filtration.resultHeading">⏱️ Podsumowanie:
+                                </h5>
+                                <div class="d-flex flex-column gap-2 small">
+                                    <div class="d-flex justify-content-between">
+                                        <span style="color:var(--text-secondary);"
+                                            data-i18n="params.filtration.turnover1">Czas jednego obiegu:</span>
+                                        <strong id="resSingleTurnover">--</strong>
+                                    </div>
+                                    <div class="d-flex justify-content-between">
+                                        <span style="color:var(--text-secondary);"
+                                            data-i18n="params.filtration.throughput">Przepustowość godzinowa:</span>
+                                        <strong><span id="resHourlyPercentage">--</span> <span
+                                                data-i18n="params.filtration.throughputSuffix">objętości
+                                                basenu</span></strong>
+                                    </div>
+                                    <hr class="divider my-1">
+                                    <p class="fw-semibold mb-1" data-i18n="params.filtration.dailyNorm">Dzienna norma
+                                        pracy pompy:</p>
+                                    <div class="d-flex justify-content-between">
+                                        <span style="color:var(--text-secondary);"
+                                            data-i18n="params.filtration.double">Minimum (2 obiegi):</span>
+                                        <span><strong id="resDoubleTurnover">--</strong> <span
+                                                style="color:var(--text-muted);">(<span id="costDouble">--</span>
+                                                zł)</span></span>
+                                    </div>
+                                    <div class="d-flex justify-content-between">
+                                        <span style="color:var(--text-secondary);"
+                                            data-i18n="params.filtration.triple">Intensywnie / upały (3 obiegi):</span>
+                                        <span><strong id="resTripleTurnover">--</strong> <span
+                                                style="color:var(--text-muted);">(<span id="costTriple">--</span>
+                                                zł)</span></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ══ TAB: DIAGNOZA ═══════════════════════════════════ -->
+        <section id="problemy" class="tab-content-panel">
+            <div class="card p-4 p-lg-5">
+                <h2 class="h3 fw-bold mb-2" data-i18n="problems.heading">Co się dzieje z Twoją wodą?</h2>
+                <p class="mb-5" style="color:var(--text-secondary);" data-i18n="problems.desc">Wybierz objaw — wyjaśnimy
+                    co to oznacza i jak to naprawić bez wylewania wody.</p>
+                <div class="d-flex flex-wrap gap-3 mb-4" id="problemButtons"></div>
+                <div class="mb-5">
+                    <button id="addDiagBtn" class="btn btn-teal btn-sm d-none" data-bs-toggle="modal"
+                        data-bs-target="#diagModal" data-i18n="problems.addBtn">+ Dodaj własną diagnozę</button>
+                    <p id="addDiagHint" class="small mt-2 mb-0" style="color:var(--text-muted);"
+                        data-i18n="problems.loginHint">Zaloguj się przez Google, aby zapisywać własne diagnozy w
+                        chmurze.</p>
+                </div>
+                <div id="solutionBox" class="d-none solution-box p-4">
+                    <div class="d-flex align-items-start gap-4">
+                        <div class="fs-2 flex-shrink-0" id="solIcon">💡</div>
+                        <div>
+                            <h3 class="h5 fw-bold mb-2" id="solTitle"></h3>
+                            <div class="small lh-lg" style="color:var(--text-secondary);" id="solDesc"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="py-4 text-center">
+        <p class="small mb-0" style="color:var(--footer-color);" data-i18n="footer.text">Dobra woda to efekt regularnej
+            troski. Zbudowane z myślą o ogrodowych entuzjastach kąpieli.</p>
+    </footer>
+
+    <!-- Modal: Dodaj własną diagnozę -->
+    <div class="modal fade" id="diagModal" tabindex="-1" aria-labelledby="diagModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content"
+                style="background:var(--card-bg); border:1px solid var(--card-border); color:var(--text-primary);">
+                <div class="modal-header" style="border-color:var(--card-border);">
+                    <h5 class="modal-title fw-bold" id="diagModalLabel" data-i18n="modal.heading">Dodaj własną diagnozę
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="diagForm" class="d-flex flex-column gap-3">
+                        <div class="row g-3">
+                            <div class="col-3">
+                                <label class="form-label small fw-semibold" data-i18n="modal.iconLabel">Ikona</label>
+                                <input type="text" id="cpIcon" class="form-control text-center fs-4" value="⚠️"
+                                    maxlength="4">
+                            </div>
+                            <div class="col-9">
+                                <label class="form-label small fw-semibold" data-i18n="modal.labelLabel">Krótki opis
+                                    przycisku</label>
+                                <input type="text" id="cpLabel" class="form-control"
+                                    data-i18n-placeholder="modal.labelPlaceholder"
+                                    placeholder="np. Woda śmierdzi siarką">
+                            </div>
+                        </div>
+                        <div>
+                            <label class="form-label small fw-semibold" data-i18n="modal.titleLabel">Tytuł
+                                diagnozy</label>
+                            <input type="text" id="cpTitle" class="form-control"
+                                data-i18n-placeholder="modal.titlePlaceholder" placeholder="np. Siarkowodór w wodzie">
+                        </div>
+                        <div>
+                            <label class="form-label small fw-semibold" data-i18n="modal.descLabel">Opis i
+                                rozwiązanie</label>
+                            <textarea id="cpDesc" class="form-control" rows="5"
+                                data-i18n-placeholder="modal.descPlaceholder"
+                                placeholder="Opisz problem i kroki które pomogły..."></textarea>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer" style="border-color:var(--card-border);">
+                    <button type="button" class="btn btn-outline" data-bs-dismiss="modal"
+                        data-i18n="modal.cancel">Anuluj</button>
+                    <button type="button" class="btn btn-teal" onclick="saveCustomProblem()"
+                        data-i18n="modal.save">Zapisz w chmurze</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast: potwierdzenie zapisu do chmury -->
+    <div class="position-fixed bottom-0 end-0 p-3" style="z-index:9999;">
+        <div id="saveToast" class="toast align-items-center text-white border-0" role="alert" aria-live="assertive" style="background:var(--teal-500);">
+            <div class="d-flex">
+                <div class="toast-body fw-semibold" id="saveToastMsg">✓ Zapisano w chmurze</div>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal: Nowy własny preparat chemiczny -->
+    <div class="modal fade" id="customChemModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content"
+                style="background:var(--card-bg); border:1px solid var(--card-border); color:var(--text-primary);">
+                <div class="modal-header" style="border-color:var(--card-border);">
+                    <h5 class="modal-title fw-bold" data-i18n="chem.modal.heading">Nowy własny preparat</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="chemForm" class="d-flex flex-column gap-3">
+                        <div>
+                            <label class="form-label small fw-semibold" data-i18n="chem.modal.name">Nazwa
+                                preparatu</label>
+                            <input type="text" id="ccName" class="form-control"
+                                data-i18n-placeholder="chem.modal.namePlaceholder" placeholder="np. Mój flokulant">
+                        </div>
+                        <div class="row g-3">
+                            <div class="col-7">
+                                <label class="form-label small fw-semibold" data-i18n="chem.modal.dosage">Dawka na 1 m³
+                                    wody</label>
+                                <input type="number" id="ccDosage" class="form-control" placeholder="np. 50" min="0"
+                                    step="0.1">
+                            </div>
+                            <div class="col-5">
+                                <label class="form-label small fw-semibold"
+                                    data-i18n="chem.modal.unit">Jednostka</label>
+                                <select id="ccUnit" class="form-select">
+                                    <option value="g">Gramy (g)</option>
+                                    <option value="ml">Mililitry (ml)</option>
+                                    <option value="szt">Sztuki (szt)</option>
+                                </select>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer" style="border-color:var(--card-border);">
+                    <button type="button" class="btn btn-outline" data-bs-dismiss="modal"
+                        data-i18n="modal.cancel">Anuluj</button>
+                    <button type="button" class="btn btn-teal" onclick="saveCustomChemicalToCloud()"
+                        data-i18n="chem.modal.save">Zapisz w chmurze</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="pool.js"></script>
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+        import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+        import { getFirestore, collection, addDoc, getDocs, query, deleteDoc, doc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyBJdfsi55wQoFfq038vGG_pesohv5bEYQQ",
+            authDomain: "pool-fa359.firebaseapp.com",
+            projectId: "pool-fa359",
+            storageBucket: "pool-fa359.firebasestorage.app",
+            messagingSenderId: "188024990861",
+            appId: "1:188024990861:web:8ef49755fe9bbb184486c4"
+        };
+
+        try {
+            const app = initializeApp(firebaseConfig);
+            const auth = getAuth(app);
+            const db = getFirestore(app);
+            const provider = new GoogleAuthProvider();
+
+            window.firebaseDb = db;
+            window.signInWithGoogle = () => signInWithPopup(auth, provider);
+            window.signOutFirebase = () => signOut(auth);
+            window.addFirestoreDoc = addDoc;
+            window.collectionRef = collection;
+            window.getDocs = getDocs;
+            window.query = query;
+            window.deleteFirestoreDoc = deleteDoc;
+            window.docRef = doc;
+
+            onAuthStateChanged(auth, user => window.handleAuthStateChanged(user));
+        } catch (e) {
+            console.error('Firebase init error', e);
+            window.handleAuthStateChanged(null);
+        }
+    </script>
+</body>
+
+</html>
